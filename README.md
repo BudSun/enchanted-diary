@@ -61,10 +61,40 @@ Open the page → ⚙ top-right → paste a **SiliconFlow API key** (get one at 
 
 ### Self-hosting
 
-`server.py` is a single-file Python 3 server using only the standard library — no `pip install` needed. To deploy:
+Two options:
 
-- **Local network**: `python3 server.py` (already binds to `0.0.0.0:8080`)
-- **Public**: put it behind nginx / caddy, or wrap it as a [Supabase Edge Function](https://supabase.com/edge-functions) for free hosting. Edit `src/providers/siliconflow.js` for model / prompt changes.
+#### A. Local / LAN (Python, zero deps)
+
+```sh
+python3 server.py
+# → http://localhost:8080/  (binds 0.0.0.0 so other devices on your Wi-Fi can reach it)
+```
+
+`server.py` is a single-file Python 3 server using only the standard library — no `pip install` needed.
+
+#### B. Public deployment (Cloudflare Workers, free)
+
+```sh
+# one-time setup
+npm install -g wrangler
+wrangler login            # opens browser to authorize
+
+# deploy (takes ~30s)
+wrangler deploy
+
+# → https://enchanted-diary.<your-subdomain>.workers.dev
+```
+
+Free tier: **100,000 requests/day**, global edge, SSE streaming works natively. No env vars needed since users supply their own API key at runtime (kept in browser localStorage).
+
+To use your own API key for everyone, edit `worker.js` and `wrangler.toml`:
+```toml
+# wrangler.toml
+[vars]
+SILICONFLOW_API_KEY = "sk-..."   # then read env.SILICONFLOW_API_KEY in worker.js
+```
+
+Edit models / prompts in `worker.js` (lines near the top) or `src/providers/siliconflow.js`.
 
 ### Tech
 
@@ -117,7 +147,25 @@ python3 server.py
 - **前端**：纯 JS 单 HTML 文件（无构建步骤）
 - **字体**：Dancing Script（英文）+ 演示夏行楷 Ma Shan Zheng（中文），均 SIL OFL
 - **手写动画**：`opentype.js` 把 TTF 解成 SVG path，用 `stroke-dashoffset` 一画一笔动
-- **后端**：Python `http.server` + `http.client`，零依赖
+- **后端（本地）**：Python `http.server` + `http.client`，零依赖
+- **后端（云端）**：`worker.js` —— Cloudflare Worker 部署，全球边缘节点
+
+### 部署到 Cloudflare（免费）
+
+```sh
+npm install -g wrangler
+wrangler login
+wrangler deploy
+```
+
+部署完会得到一个 `https://enchanted-diary.<subdomain>.workers.dev` 的 URL，全球可访问，免费 100K 请求/天。
+
+如果想让所有人用同一个 key（不用每人填），改 `wrangler.toml` 加 `[vars]`：
+
+```toml
+[vars]
+SILICONFLOW_API_KEY = "sk-..."
+```
 
 ### 致谢
 

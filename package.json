@@ -1,0 +1,24 @@
+{
+  "name": "riddle-html",
+  "version": "1.0.0",
+  "description": "> Write to Tom Riddle's diary on the parchment. Rest your pen. The ink is drunk — and the diary writes back, stroke by stroke.",
+  "main": "worker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shawn-TKD/enchanted-diary.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Shawn-TKD/enchanted-diary/issues"
+  },
+  "homepage": "https://github.com/Shawn-TKD/enchanted-diary#readme",
+  "dependencies": {
+    "@cloudflare/kv-asset-handler": "^0.5.0"
+  }
+}

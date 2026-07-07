@@ -1,0 +1,23 @@
+name = "enchanted-diary"
+main = "worker.js"
+compatibility_date = "2025-04-01"
+
+# Static assets: index.html, fonts/, etc. served from this directory.
+# Worker code (worker.js, src/) is NOT served — they're code, not assets.
+[assets]
+directory = "./"
+binding = "ASSETS"
+
+[observability]
+enabled = true
+
+# Rate limit (per IP) is enforced inside worker.js.
+# For higher scale, swap for Cloudflare Durable Objects (commented below).
+#
+# [[durable_objects.bindings]]
+# name = "RATE_LIMITER"
+# class_name = "RateLimiter"
+#
+# [[migrations]]
+# tag = "v1"
+# new_classes = ["RateLimiter"]
