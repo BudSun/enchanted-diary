@@ -608,11 +608,39 @@ async function startThinking() {
   startReplying(inkSnapshot);
 }
 
+// 压缩 OCR 用截图：铺白底（画布原本透明）→ 最长边 1024 → JPEG 0.8
+function compressForOcr(dataUrl) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      try {
+        const MAX = 1024;
+        const scale = Math.min(1, MAX / Math.max(img.width, img.height));
+        const w = Math.max(1, Math.round(img.width * scale));
+        const h = Math.max(1, Math.round(img.height * scale));
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        const ctx = c.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, w, h);
+        ctx.drawImage(img, 0, 0, w, h);
+        resolve(c.toDataURL('image/jpeg', 0.8));
+      } catch (e) { reject(e); }
+    };
+    img.onerror = () => reject(new Error('snapshot image decode failed'));
+    img.src = dataUrl;
+  });
+}
 // =====================================================================
 // 单端点调用：POST /api/oracle { image, apiKey } → SSE 流
 // 后端负责 OCR + DeepSeek 对话，前端只管把流逐字动画写出来
 // =====================================================================
 async function startReplying(imageDataUrl) {
+  try {
+    imageDataUrl = await compressForOcr(imageDataUrl);
+  } catch (e) {
+    console.warn('[riddle] compress failed, sending original:', e);
+  }
   console.log('[riddle] /api/oracle, image bytes ~', Math.floor(imageDataUrl.length * 0.75));
 
   // 在手机/平板上解析 5MB+ 中文字体需要 2-5 秒。如果不等字体加载完就
