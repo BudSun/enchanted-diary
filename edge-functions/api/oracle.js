@@ -138,7 +138,8 @@ export async function onRequestPost({ request, env }) {
     const chatBody = JSON.stringify({
       model: PROVIDER.chatModel,
       stream: true,
-      max_tokens: 800,
+      enable_thinking: false,
+      max_tokens: 5120,
       messages: [
         { role: 'system', content: PROVIDER.systemPrompt },
         { role: 'user', content: userText },
