@@ -793,8 +793,8 @@ let fontsReady = null;  // Promise<{latin, cjk}>
 function loadFonts() {
   if (fontsReady) return fontsReady;
   fontsReady = Promise.all([
-    fetch('DancingScript.ttf').then(r => r.arrayBuffer()).then(b => opentype.parse(b)),
-    fetch('MaShanZheng-Regular.ttf').then(r => r.arrayBuffer()).then(b => opentype.parse(b)),
+    fetch('fonts/DancingScript.ttf').then(r => r.arrayBuffer()).then(b => opentype.parse(b)),
+    fetch('fonts/MaShanZheng-Regular.ttf').then(r => r.arrayBuffer()).then(b => opentype.parse(b)),
   ]).then(([latin, cjk]) => ({ latin, cjk }));
   return fontsReady;
 }
