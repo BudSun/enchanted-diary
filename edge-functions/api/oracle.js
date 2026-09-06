@@ -10,7 +10,7 @@
 // Inlined provider config — mirror of src/providers/siliconflow.js
 const PROVIDER = {
   base: 'api.siliconflow.cn',
-  ocrModel: 'deepseek-ai/DeepSeek-OCR',
+  ocrModel: 'Qwen/Qwen3-VL-8B-Instruct',
   chatModel: 'Qwen/Qwen3.5-4B',
   ocrPrompt:
     '这是一张手写日记的图片。请提取图中所有可辨识的手写文字。' +
