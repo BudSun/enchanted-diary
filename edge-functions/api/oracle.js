@@ -11,7 +11,7 @@
 const PROVIDER = {
   base: 'api.siliconflow.cn',
   ocrModel: 'Qwen/Qwen3-VL-8B-Instruct',
-  chatModel: 'deepseek-ai/DeepSeek-V3',
+  chatModel: 'Qwen/Qwen3.5-4B',
   ocrPrompt:
     '这是一张手写日记的图片。请提取图中所有可辨识的手写文字。' +
     '只输出文字本身,不要任何解释、引号或前缀。' +
