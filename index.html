@@ -596,12 +596,7 @@ function tickDrinking() {
 }
 
 async function startThinking() {
-  if (!CFG.apiKey) {
-    setStatus('请先在 ⚙ 中填入 SiliconFlow API key');
-    state = { kind: 'listening' };
-    scheduleIdle();
-    return;
-  }
+  
   state = { kind: 'thinking', pulse: performance.now(), blotOn: true };
   setStatus('the diary is thinking…');
   // OCR + 对话 都在后端 /api/oracle 里做了 —— 直接发图
